@@ -27,3 +27,11 @@
 ## Phase 6: Reward Shaping
 - Status: COMPLETED
 - Details: Implemented `RewardShapingWrapper` in `src/envs/wrappers.py` providing potential-based distance shaping, key pickup bonuses, door interaction incentives, and step efficiency penalties. Documented rationale in `reports/reward_shaping_notes.md`.
+
+## Phase 7: Comparative Evaluation
+- Status: COMPLETED
+- Details: Implemented `src/evaluation/compare_policies.py`. Evaluated Random Baseline, Non-Recurrent MLP-PPO, and Recurrent CNN-LSTM PPO policies across seen map seeds (0..19) and unseen held-out map seeds (1000..1019) across all 4 environments. Saved full evaluation matrix to `reports/comparison_table.csv` and formatted Markdown report to `reports/comparison_table.md`.
+
+## Phase 8: Visualization & Media Generation
+- Status: COMPLETED
+- Details: Implemented `src/evaluation/plot_results.py` and `src/evaluation/render_trajectory_gif.py`. Generated trajectory GIFs (`media/gifs/*.gif`), performance comparison bar charts (`media/success_rate_comparison.png`, `media/steps_to_goal_comparison.png`), and curriculum reward curve (`media/reward_curves/curriculum_progress.png`).

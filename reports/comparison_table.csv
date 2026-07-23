@@ -1,0 +1,25 @@
+Environment,Policy,Evaluation Split,Success Rate (%),Mean Reward,Mean Steps,Mean Collisions
+MiniGrid-Empty-8x8-v0,Random,Seen (0..19),25.0,0.1110,231.6,9.7
+MiniGrid-Empty-8x8-v0,MLP-PPO Baseline,Seen (0..19),100.0,0.9443,15.8,1.5
+MiniGrid-Empty-8x8-v0,CNN-LSTM-PPO (Ours),Seen (0..19),0.0,0.0000,256.0,3.3
+MiniGrid-Empty-8x8-v0,Random,Unseen (1000..1019),25.0,0.1073,232.6,10.8
+MiniGrid-Empty-8x8-v0,MLP-PPO Baseline,Unseen (1000..1019),100.0,0.9481,14.8,1.5
+MiniGrid-Empty-8x8-v0,CNN-LSTM-PPO (Ours),Unseen (1000..1019),0.0,0.0000,256.0,3.0
+MiniGrid-DoorKey-8x8-v0,Random,Seen (0..19),0.0,0.0000,640.0,41.8
+MiniGrid-DoorKey-8x8-v0,MLP-PPO Baseline,Seen (0..19),15.0,0.0620,606.5,389.6
+MiniGrid-DoorKey-8x8-v0,CNN-LSTM-PPO (Ours),Seen (0..19),0.0,0.0000,640.0,8.6
+MiniGrid-DoorKey-8x8-v0,Random,Unseen (1000..1019),0.0,0.0000,640.0,44.7
+MiniGrid-DoorKey-8x8-v0,MLP-PPO Baseline,Unseen (1000..1019),10.0,0.0473,613.5,412.7
+MiniGrid-DoorKey-8x8-v0,CNN-LSTM-PPO (Ours),Unseen (1000..1019),0.0,0.0000,640.0,10.1
+MiniGrid-MultiRoom-N2-S4-v0,Random,Seen (0..19),5.0,0.0129,39.6,3.8
+MiniGrid-MultiRoom-N2-S4-v0,MLP-PPO Baseline,Seen (0..19),0.0,0.0000,40.0,32.3
+MiniGrid-MultiRoom-N2-S4-v0,CNN-LSTM-PPO (Ours),Seen (0..19),0.0,0.0000,40.0,0.8
+MiniGrid-MultiRoom-N2-S4-v0,Random,Unseen (1000..1019),0.0,0.0000,40.0,3.5
+MiniGrid-MultiRoom-N2-S4-v0,MLP-PPO Baseline,Unseen (1000..1019),0.0,0.0000,40.0,35.2
+MiniGrid-MultiRoom-N2-S4-v0,CNN-LSTM-PPO (Ours),Unseen (1000..1019),0.0,0.0000,40.0,1.0
+MiniGrid-MultiRoom-N4-S5-v0,Random,Seen (0..19),0.0,0.0000,120.0,9.7
+MiniGrid-MultiRoom-N4-S5-v0,MLP-PPO Baseline,Seen (0..19),0.0,0.0000,120.0,90.7
+MiniGrid-MultiRoom-N4-S5-v0,CNN-LSTM-PPO (Ours),Seen (0..19),0.0,0.0000,120.0,2.0
+MiniGrid-MultiRoom-N4-S5-v0,Random,Unseen (1000..1019),0.0,0.0000,120.0,10.0
+MiniGrid-MultiRoom-N4-S5-v0,MLP-PPO Baseline,Unseen (1000..1019),0.0,0.0000,120.0,92.8
+MiniGrid-MultiRoom-N4-S5-v0,CNN-LSTM-PPO (Ours),Unseen (1000..1019),0.0,0.0000,120.0,2.4
