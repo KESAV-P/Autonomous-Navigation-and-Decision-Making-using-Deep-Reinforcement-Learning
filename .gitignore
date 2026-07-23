@@ -3,8 +3,10 @@ __pycache__/
 *.pyc
 checkpoints/
 logs/
-media/
 wandb/
 .DS_Store
 *.zip
 !reports/*.csv
+!media/gifs/*.gif
+!media/*.png
+!media/reward_curves/*.png
