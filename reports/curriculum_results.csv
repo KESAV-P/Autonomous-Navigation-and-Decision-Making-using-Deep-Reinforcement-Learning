@@ -1,0 +1,5 @@
+stage,env_id,total_timesteps,mean_reward,std_reward,success_rate,mean_steps,mean_collisions
+0,MiniGrid-Empty-8x8-v0,50000,0.6862304687499999,0.2868368145829145,1.0,89.25,54.45
+1,MiniGrid-DoorKey-8x8-v0,80000,0.0404453125,0.12356159975132025,0.1,618.35,34.55
+2,MiniGrid-MultiRoom-N2-S4-v0,100000,0.0,0.0,0.0,40.0,0.7
+3,MiniGrid-MultiRoom-N4-S5-v0,100000,0.0,0.0,0.0,120.0,2.7

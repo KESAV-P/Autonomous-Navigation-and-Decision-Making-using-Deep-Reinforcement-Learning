@@ -1,0 +1,30 @@
+curriculum:
+  - stage: 0
+    env_id: "MiniGrid-Empty-8x8-v0"
+    total_timesteps: 50000
+  - stage: 1
+    env_id: "MiniGrid-DoorKey-8x8-v0"
+    total_timesteps: 80000
+  - stage: 2
+    env_id: "MiniGrid-MultiRoom-N2-S4-v0"
+    total_timesteps: 100000
+  - stage: 3
+    env_id: "MiniGrid-MultiRoom-N4-S5-v0"
+    total_timesteps: 100000
+
+obs_mode: "symbolic"
+seed: 42
+policy: "CnnLstmPolicy"
+features_dim: 128
+n_lstm_layers: 1
+lstm_hidden_size: 128
+learning_rate: 0.0003
+n_steps: 128
+batch_size: 64
+n_epochs: 4
+gamma: 0.99
+gae_lambda: 0.95
+clip_range: 0.2
+ent_coef: 0.01
+wandb_project: "drl-nav-curriculum"
+results_csv: "reports/curriculum_results.csv"

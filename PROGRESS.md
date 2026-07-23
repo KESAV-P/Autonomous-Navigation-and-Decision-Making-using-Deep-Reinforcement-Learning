@@ -19,3 +19,11 @@
 ## Phase 4: Recurrent PPO Integration (CNN + LSTM)
 - Status: COMPLETED
 - Details: Integrated `sb3_contrib.RecurrentPPO` with `CnnLstmPolicy` and `NavCNNExtractor` in `src/training/train_recurrent_ppo.py` and `configs/recurrent_ppo.yaml`. Trained for 50k steps on `MiniGrid-Empty-8x8-v0`. Evaluated with `quick_eval.py`: **100.0% Success Rate**, Mean Reward **0.6862 +/- 0.2868**. Saved checkpoint to `checkpoints/recurrent_ppo_empty8x8.zip`.
+
+## Phase 5: Curriculum Training on Harder Environments
+- Status: COMPLETED
+- Details: Implemented curriculum pipeline `src/training/train_curriculum.py` transferring weights across 4 environments (`Empty-8x8` -> `DoorKey-8x8` -> `MultiRoom-N2-S4` -> `MultiRoom-N4-S5`). Checkpoints saved to `checkpoints/curriculum_stage_*`. Results saved to `reports/curriculum_results.csv`.
+
+## Phase 6: Reward Shaping
+- Status: COMPLETED
+- Details: Implemented `RewardShapingWrapper` in `src/envs/wrappers.py` providing potential-based distance shaping, key pickup bonuses, door interaction incentives, and step efficiency penalties. Documented rationale in `reports/reward_shaping_notes.md`.
