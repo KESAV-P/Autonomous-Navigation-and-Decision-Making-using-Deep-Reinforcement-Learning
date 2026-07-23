@@ -39,10 +39,10 @@ def run_visual_demo(
     # Initialize Pygame Display
     pygame.init()
     pygame.font.init()
-    window_size = 512
+    window_size = 640
     screen = pygame.display.set_mode((window_size, window_size))
-    pygame.display.set_caption("Autonomous Navigation Live Visual Demo")
-    font = pygame.font.SysFont("Helvetica", 20, bold=True)
+    pygame.display.set_caption("Autonomous Navigation Live Visual Demo (16x16 & 8x8 Grids)")
+    font = pygame.font.SysFont("Helvetica", 22, bold=True)
 
     for ep in range(n_episodes):
         seed = 1000 + ep
