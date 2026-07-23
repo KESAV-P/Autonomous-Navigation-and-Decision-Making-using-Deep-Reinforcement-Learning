@@ -1,0 +1,32 @@
+# 16x16 DoorKey Environment Training Configuration
+env_id: "MiniGrid-DoorKey-16x16-v0"
+obs_mode: "symbolic"
+seed: 42
+n_envs: 8
+total_timesteps: 500000
+
+# Policy & Recurrent Architecture
+policy: "CnnLstmPolicy"
+features_dim: 128
+lstm_hidden_size: 128
+n_lstm_layers: 1
+
+# PPO Hyperparameters
+learning_rate: 0.0003
+n_steps: 256
+batch_size: 128
+n_epochs: 4
+gamma: 0.99
+gae_lambda: 0.95
+clip_range: 0.2
+ent_coef: 0.01
+
+# Reward Shaping Parameters
+use_shaping: true
+step_penalty: 0.0005
+key_bonus: 0.2
+door_bonus: 0.3
+
+# Paths
+checkpoint_path: "checkpoints/doorkey_16x16_agent.zip"
+wandb_project: "drl-nav-doorkey-16x16"
