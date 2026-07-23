@@ -5,6 +5,10 @@ Trains a standard non-recurrent MlpPolicy PPO agent on MiniGrid-Empty-8x8-v0.
 Logs metrics to WandB and saves the trained checkpoint.
 """
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+
 import os
 import argparse
 import yaml
@@ -21,7 +25,6 @@ def train_baseline(config_path: str):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
-    # Set reproducibility seeds
     seed = config.get("seed", 42)
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -29,11 +32,9 @@ def train_baseline(config_path: str):
     env_id = config.get("env_id", "MiniGrid-Empty-8x8-v0")
     obs_mode = config.get("obs_mode", "symbolic")
     
-    # Initialize environment
     raw_env = make_env(env_id=env_id, seed=seed, obs_mode=obs_mode)
     env = Monitor(raw_env)
 
-    # WandB Initialization (offline mode fallback if unauthenticated)
     wandb_project = config.get("wandb_project", "drl-nav-baseline")
     try:
         run = wandb.init(
@@ -48,7 +49,6 @@ def train_baseline(config_path: str):
         run = None
         callback = None
 
-    # Instantiate PPO model
     model = PPO(
         policy=config.get("policy", "MlpPolicy"),
         env=env,
@@ -70,7 +70,6 @@ def train_baseline(config_path: str):
         callback=callback
     )
 
-    # Save model checkpoint
     checkpoint_path = config.get("checkpoint_path", "checkpoints/baseline_ppo.zip")
     os.makedirs(os.path.dirname(checkpoint_path), exist_ok=True)
     model.save(checkpoint_path)

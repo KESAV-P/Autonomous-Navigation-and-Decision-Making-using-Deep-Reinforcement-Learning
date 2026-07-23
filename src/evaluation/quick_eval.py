@@ -5,6 +5,11 @@ Loads a given PPO or RecurrentPPO checkpoint, runs evaluation episodes across a 
 and computes mean reward, success rate, mean steps to goal, and mean collisions.
 """
 
+import sys
+from pathlib import Path
+# Add repo root directory to sys.path for direct script execution
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+
 import argparse
 import numpy as np
 import yaml
