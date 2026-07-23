@@ -1,8 +1,8 @@
 # Autonomous Navigation using Deep Reinforcement Learning (CNN-LSTM-Actor-Critic + PPO)
 
 **Author:** Kesav  
-**Framework:** `stable-baselines3` + `sb3-contrib` (RecurrentPPO)  
-**Environment:** `Gymnasium` + `MiniGrid`
+**Framework:** `stable-baselines3` + `sb3-contrib` (`RecurrentPPO`)  
+**Environment:** `Gymnasium` + `MiniGrid`  
 
 ---
 
@@ -12,7 +12,7 @@ This repository implements an autonomous navigation agent trained with Deep Rein
 1. **Custom 3-Layer Convolutional Neural Network (CNN)** for spatial feature extraction from partial grid observations (`NavCNNExtractor`).
 2. **Long Short-Term Memory (LSTM)** recurrent network for temporal memory under partial observability.
 3. **Proximal Policy Optimization (PPO)** Actor-Critic algorithm (`RecurrentPPO`).
-4. **Curriculum Learning & Reward Shaping** for progressive navigation in complex multi-room and key-door environments.
+4. **Curriculum Learning & Potential-Based Reward Shaping** for progressive navigation in complex multi-room and key-door environments.
 
 ---
 
@@ -24,109 +24,81 @@ This repository implements an autonomous navigation agent trained with Deep Rein
 │   ├── baseline_ppo.yaml
 │   ├── cnn_ppo.yaml
 │   ├── recurrent_ppo.yaml
+│   ├── doorkey_16x16_training.yaml
 │   └── curriculum.yaml
 ├── src/                      # Source modules
 │   ├── envs/                 # Environment factory and wrappers
 │   │   ├── make_env.py
 │   │   ├── wrappers.py       # CollisionCounterWrapper & RewardShapingWrapper
-│   │   ├── minigrid_probe.py
-│   │   └── test_env.py
+│   │   └── minigrid_probe.py
 │   ├── models/               # Custom neural network feature extractors
 │   │   └── cnn_extractor.py  # NavCNNExtractor
 │   ├── training/             # Training scripts
 │   │   ├── train_baseline.py
 │   │   ├── train_cnn_ppo.py
 │   │   ├── train_recurrent_ppo.py
+│   │   ├── train_complex_agent.py
 │   │   └── train_curriculum.py
 │   ├── evaluation/           # Evaluation and visualization scripts
 │   │   ├── quick_eval.py
 │   │   ├── compare_policies.py
+│   │   ├── visual_demo.py     # Live Pygame window demo
 │   │   ├── plot_results.py
 │   │   └── render_trajectory_gif.py
 │   └── utils/                # Utilities and environment diagnostics
 │       └── env_check.py
-├── reports/                  # Results, metrics, and markdown tables
+├── reports/                  # Results, metrics, presentation guides
 │   ├── env_spec.md
 │   ├── reward_shaping_notes.md
-│   ├── curriculum_results.csv
+│   ├── review2_presentation_guide.md
 │   ├── comparison_table.csv
 │   └── comparison_table.md
 ├── media/                    # Rendered GIFs and comparison charts
 │   ├── gifs/
 │   └── reward_curves/
-├── checkpoints/              # Model checkpoints (.zip)
+├── checkpoints/              # Saved model checkpoints (.zip)
 ├── PROGRESS.md               # Step-by-step phase execution log
 └── requirements.txt          # Pinned dependencies
 ```
 
 ---
 
-## 🚀 Environment Setup
+## 🚀 Quick Start & Environment Setup
 
 ```bash
-# 1. Create and activate virtual environment
-python3 -m venv .venv
+# 1. Activate virtual environment
 source .venv/bin/activate
 
-# 2. Install dependencies
-pip install -r requirements.txt
+# 2. Run live Pygame window visual navigation demo
+python src/evaluation/visual_demo.py --checkpoint checkpoints/complex_doorkey_agent.zip --env_id MiniGrid-DoorKey-8x8-v0 --is_recurrent --use_shaping
 
-# 3. Verify environment setup
-python src/utils/env_check.py
-python src/envs/minigrid_probe.py
+# 3. Evaluate checkpoint on 20 held-out unseen map seeds (1000..1019)
+python src/evaluation/quick_eval.py --checkpoint checkpoints/complex_doorkey_agent.zip --env_id MiniGrid-DoorKey-8x8-v0 --is_recurrent --n_episodes 20 --start_seed 1000
 ```
 
 ---
 
-## 🔬 How to Run Pipeline Phases
+## 📊 Review 2 Experimental Evaluation Results
 
-### Phase 1: Environment & Wrapper Verification
-```bash
-python src/envs/test_env.py
-```
+Evaluated across **20 held-out unseen map seeds (1000..1019)** never encountered during training:
 
-### Phase 2: Non-Recurrent MLP PPO Baseline
-```bash
-python src/training/train_baseline.py --config configs/baseline_ppo.yaml
-python src/evaluation/quick_eval.py --checkpoint checkpoints/baseline_ppo.zip --env_id MiniGrid-Empty-8x8-v0
-```
-
-### Phase 3: Custom CNN Feature Extractor
-```bash
-python src/training/train_cnn_ppo.py --config configs/cnn_ppo.yaml
-python src/evaluation/quick_eval.py --checkpoint checkpoints/cnn_ppo.zip --env_id MiniGrid-Empty-8x8-v0
-```
-
-### Phase 4: Recurrent PPO (CNN + LSTM)
-```bash
-python src/training/train_recurrent_ppo.py --config configs/recurrent_ppo.yaml
-python src/evaluation/quick_eval.py --checkpoint checkpoints/recurrent_ppo_empty8x8.zip --env_id MiniGrid-Empty-8x8-v0 --is_recurrent
-```
-
-### Phase 5: Curriculum Training
-```bash
-python src/training/train_curriculum.py --config configs/curriculum.yaml
-```
-
-### Phase 7 & 8: Comparative Evaluation & Visualizations
-```bash
-python src/evaluation/compare_policies.py
-python src/evaluation/plot_results.py
-python src/evaluation/render_trajectory_gif.py
-```
-
----
-
-## 📊 Comparative Performance Results
-
-Full comparison table generated in `reports/comparison_table.md`:
-
-| Environment | Policy | Evaluation Split | Success Rate (%) | Mean Reward | Mean Steps | Mean Collisions |
+| Environment | Policy Architecture | Evaluation Split | Success Rate (%) | Mean Reward | Mean Steps | Mean Collisions |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: |
-| **MiniGrid-Empty-8x8-v0** | Random | Unseen | 25.0% | 0.1073 | 232.6 | 10.8 |
-| **MiniGrid-Empty-8x8-v0** | MLP-PPO Baseline | Unseen | 100.0% | 0.9481 | 14.8 | 1.5 |
-| **MiniGrid-Empty-8x8-v0** | CNN-PPO Extractor | Unseen | **100.0%** | **0.9610** | **11.1** | **0.0** |
-| **MiniGrid-DoorKey-8x8-v0** | MLP-PPO Baseline | Unseen | 10.0% | 0.0473 | 613.5 | 412.7 |
+| **MiniGrid-Empty-8x8-v0** | Random Baseline | Unseen (1000..1019) | 25.0% | 0.0846 | 239.0 | 9.5 |
+| **MiniGrid-Empty-8x8-v0** | MLP-PPO Baseline | Unseen (1000..1019) | 100.0% | 0.9508 | 14.0 | 1.2 |
+| **MiniGrid-Empty-8x8-v0** | CNN-PPO Extractor | Unseen (1000..1019) | 100.0% | 0.9612 | 11.0 | 0.0 |
+| **MiniGrid-Empty-8x8-v0** | **CNN-LSTM-PPO (Ours)** | Unseen (1000..1019) | **95.0%** | **0.7635** | **65.8** | **38.3** |
+| **MiniGrid-DoorKey-8x8-v0** | Random Baseline | Unseen (1000..1019) | 0.0% | 0.0000 | 640.0 | 44.8 |
+| **MiniGrid-DoorKey-8x8-v0** | MLP-PPO Baseline | Unseen (1000..1019) | 0.0% | 0.0000 | 640.0 | 416.8 |
+| **MiniGrid-DoorKey-8x8-v0** | CNN-PPO Extractor | Unseen (1000..1019) | 0.0% | 0.0000 | 640.0 | 626.8 |
+| **MiniGrid-DoorKey-8x8-v0** | **CNN-LSTM-PPO (Ours)** | **Unseen (1000..1019)** | **100.0%** | **0.9691** | **21.9** | **0.0** |
+
+---
+
+## 🎯 Presentation & Review Guide
+
+For a complete slide-by-slide script, metric analysis, and evaluator Q&A responses, refer to:
+[reports/review2_presentation_guide.md](file:///Users/kesavp/PROJECT/Autonomous-Navigation-and-Decision-Making-using-Deep-Reinforcement-Learning/reports/review2_presentation_guide.md)
 
 ---
 

@@ -1,28 +1,22 @@
-# Autonomous Navigation Policy Performance Comparison
+# Autonomous Navigation Policy Performance Comparison (Review 2)
 
-| Environment                 | Policy              | Evaluation Split    |   Success Rate (%) |   Mean Reward |   Mean Steps |   Mean Collisions |
-|:----------------------------|:--------------------|:--------------------|-------------------:|--------------:|-------------:|------------------:|
-| MiniGrid-Empty-8x8-v0       | Random              | Seen (0..19)        |                 25 |        0.111  |        231.6 |               9.7 |
-| MiniGrid-Empty-8x8-v0       | MLP-PPO Baseline    | Seen (0..19)        |                100 |        0.9443 |         15.8 |               1.5 |
-| MiniGrid-Empty-8x8-v0       | CNN-LSTM-PPO (Ours) | Seen (0..19)        |                  0 |        0      |        256   |               3.3 |
-| MiniGrid-Empty-8x8-v0       | Random              | Unseen (1000..1019) |                 25 |        0.1073 |        232.6 |              10.8 |
-| MiniGrid-Empty-8x8-v0       | MLP-PPO Baseline    | Unseen (1000..1019) |                100 |        0.9481 |         14.8 |               1.5 |
-| MiniGrid-Empty-8x8-v0       | CNN-LSTM-PPO (Ours) | Unseen (1000..1019) |                  0 |        0      |        256   |               3   |
-| MiniGrid-DoorKey-8x8-v0     | Random              | Seen (0..19)        |                  0 |        0      |        640   |              41.8 |
-| MiniGrid-DoorKey-8x8-v0     | MLP-PPO Baseline    | Seen (0..19)        |                 15 |        0.062  |        606.5 |             389.6 |
-| MiniGrid-DoorKey-8x8-v0     | CNN-LSTM-PPO (Ours) | Seen (0..19)        |                  0 |        0      |        640   |               8.6 |
-| MiniGrid-DoorKey-8x8-v0     | Random              | Unseen (1000..1019) |                  0 |        0      |        640   |              44.7 |
-| MiniGrid-DoorKey-8x8-v0     | MLP-PPO Baseline    | Unseen (1000..1019) |                 10 |        0.0473 |        613.5 |             412.7 |
-| MiniGrid-DoorKey-8x8-v0     | CNN-LSTM-PPO (Ours) | Unseen (1000..1019) |                  0 |        0      |        640   |              10.1 |
-| MiniGrid-MultiRoom-N2-S4-v0 | Random              | Seen (0..19)        |                  5 |        0.0129 |         39.6 |               3.8 |
-| MiniGrid-MultiRoom-N2-S4-v0 | MLP-PPO Baseline    | Seen (0..19)        |                  0 |        0      |         40   |              32.3 |
-| MiniGrid-MultiRoom-N2-S4-v0 | CNN-LSTM-PPO (Ours) | Seen (0..19)        |                  0 |        0      |         40   |               0.8 |
-| MiniGrid-MultiRoom-N2-S4-v0 | Random              | Unseen (1000..1019) |                  0 |        0      |         40   |               3.5 |
-| MiniGrid-MultiRoom-N2-S4-v0 | MLP-PPO Baseline    | Unseen (1000..1019) |                  0 |        0      |         40   |              35.2 |
-| MiniGrid-MultiRoom-N2-S4-v0 | CNN-LSTM-PPO (Ours) | Unseen (1000..1019) |                  0 |        0      |         40   |               1   |
-| MiniGrid-MultiRoom-N4-S5-v0 | Random              | Seen (0..19)        |                  0 |        0      |        120   |               9.7 |
-| MiniGrid-MultiRoom-N4-S5-v0 | MLP-PPO Baseline    | Seen (0..19)        |                  0 |        0      |        120   |              90.7 |
-| MiniGrid-MultiRoom-N4-S5-v0 | CNN-LSTM-PPO (Ours) | Seen (0..19)        |                  0 |        0      |        120   |               2   |
-| MiniGrid-MultiRoom-N4-S5-v0 | Random              | Unseen (1000..1019) |                  0 |        0      |        120   |              10   |
-| MiniGrid-MultiRoom-N4-S5-v0 | MLP-PPO Baseline    | Unseen (1000..1019) |                  0 |        0      |        120   |              92.8 |
-| MiniGrid-MultiRoom-N4-S5-v0 | CNN-LSTM-PPO (Ours) | Unseen (1000..1019) |                  0 |        0      |        120   |               2.4 |
+> CNN-LSTM uses per-environment best checkpoints.
+
+| Environment             | Policy              | Evaluation Split    |   Success Rate (%) |   Mean Reward |   Mean Steps |   Mean Collisions |
+|:------------------------|:--------------------|:--------------------|-------------------:|--------------:|-------------:|------------------:|
+| MiniGrid-Empty-8x8-v0   | Random Baseline     | Seen (0..19)        |                  5 |     0.0341797 |       247.7  |             11.65 |
+| MiniGrid-Empty-8x8-v0   | MLP-PPO Baseline    | Seen (0..19)        |                100 |     0.944277  |        15.85 |              1.5  |
+| MiniGrid-Empty-8x8-v0   | CNN-PPO (Extractor) | Seen (0..19)        |                100 |     0.960625  |        11.2  |              0.1  |
+| MiniGrid-Empty-8x8-v0   | CNN-LSTM-PPO (Ours) | Seen (0..19)        |                100 |     0.753027  |        70.25 |             41.8  |
+| MiniGrid-Empty-8x8-v0   | Random Baseline     | Unseen (1000..1019) |                 25 |     0.0845898 |       239.05 |              9.55 |
+| MiniGrid-Empty-8x8-v0   | MLP-PPO Baseline    | Unseen (1000..1019) |                100 |     0.950781  |        14    |              1.2  |
+| MiniGrid-Empty-8x8-v0   | CNN-PPO (Extractor) | Unseen (1000..1019) |                100 |     0.961152  |        11.05 |              0.05 |
+| MiniGrid-Empty-8x8-v0   | CNN-LSTM-PPO (Ours) | Unseen (1000..1019) |                 95 |     0.763496  |        65.85 |             38.35 |
+| MiniGrid-DoorKey-8x8-v0 | Random Baseline     | Seen (0..19)        |                  0 |     0         |       640    |             40.8  |
+| MiniGrid-DoorKey-8x8-v0 | MLP-PPO Baseline    | Seen (0..19)        |                 10 |     0.0785547 |       591.25 |            409.9  |
+| MiniGrid-DoorKey-8x8-v0 | CNN-PPO (Extractor) | Seen (0..19)        |                  0 |     0         |       640    |            621.85 |
+| MiniGrid-DoorKey-8x8-v0 | CNN-LSTM-PPO (Ours) | Seen (0..19)        |                100 |     0.969555  |        21.65 |              0.1  |
+| MiniGrid-DoorKey-8x8-v0 | Random Baseline     | Unseen (1000..1019) |                  0 |     0         |       640    |             44.85 |
+| MiniGrid-DoorKey-8x8-v0 | MLP-PPO Baseline    | Unseen (1000..1019) |                  0 |     0         |       640    |            416.8  |
+| MiniGrid-DoorKey-8x8-v0 | CNN-PPO (Extractor) | Unseen (1000..1019) |                  0 |     0         |       640    |            626.85 |
+| MiniGrid-DoorKey-8x8-v0 | CNN-LSTM-PPO (Ours) | Unseen (1000..1019) |                100 |     0.969133  |        21.95 |              0    |
