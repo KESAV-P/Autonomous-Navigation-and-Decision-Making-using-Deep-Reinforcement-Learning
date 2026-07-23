@@ -1,8 +1,8 @@
 """
 Live Visual Demonstration Script.
 
-Renders a live window (Pygame/OpenCV) showing the trained RL agent navigating
-step-by-step in real time.
+Renders a smooth Pygame live window showing the trained RL agent navigating
+step-by-step in real time without window freezing.
 """
 
 import sys
@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 import time
 import argparse
 import numpy as np
-import cv2
+import pygame
 from stable_baselines3 import PPO
 from sb3_contrib import RecurrentPPO
 from src.envs.make_env import make_env
@@ -28,13 +28,21 @@ def run_visual_demo(
     delay: float = 0.1
 ):
     print(f"\n=======================================================")
-    print(f"  Live Visual Demo: {checkpoint_path} on {env_id}")
+    print(f"  Live Pygame Visual Demo: {checkpoint_path} on {env_id}")
     print(f"=======================================================")
 
     if is_recurrent:
         model = RecurrentPPO.load(checkpoint_path)
     else:
         model = PPO.load(checkpoint_path)
+
+    # Initialize Pygame Display
+    pygame.init()
+    pygame.font.init()
+    window_size = 512
+    screen = pygame.display.set_mode((window_size, window_size))
+    pygame.display.set_caption("Autonomous Navigation Live Visual Demo")
+    font = pygame.font.SysFont("Helvetica", 20, bold=True)
 
     for ep in range(n_episodes):
         seed = 1000 + ep
@@ -50,26 +58,34 @@ def run_visual_demo(
         print(f"\nEpisode {ep + 1}/{n_episodes} (Seed {seed})...")
 
         while not done:
-            # Capture RGB visual frame
-            frame = env.unwrapped.render()
-            if frame is not None:
-                # Display in OpenCV window
-                bgr_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-                # Resize for high resolution display window
-                display_frame = cv2.resize(bgr_frame, (512, 512), interpolation=cv2.INTER_NEAREST)
-                
-                # Add overlay text
-                cv2.putText(display_frame, f"Env: {env_id}", (15, 35), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-                cv2.putText(display_frame, f"Step: {step_count}", (15, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
-                cv2.putText(display_frame, f"Reward: {ep_reward:.2f}", (15, 105), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                
-                cv2.imshow("Autonomous Navigation Live Visual Demo", display_frame)
-                key = cv2.waitKey(int(delay * 1000))
-                if key == 27 or key == ord('q'): # Press ESC or q to exit
+            # Handle Pygame window events to prevent window freezing
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     print("Exiting visual demo...")
                     env.close()
-                    cv2.destroyAllWindows()
+                    pygame.quit()
                     return
+
+            # Capture RGB frame
+            frame = env.unwrapped.render()
+            if frame is not None:
+                # Transpose for Pygame surface (Width, Height, Channel)
+                surf_frame = np.transpose(frame, (1, 0, 2))
+                surface = pygame.surfarray.make_surface(surf_frame)
+                scaled_surface = pygame.transform.scale(surface, (window_size, window_size))
+                screen.blit(scaled_surface, (0, 0))
+
+                # Render HUD text overlays
+                txt_env = font.render(f"Env: {env_id}", True, (255, 255, 255))
+                txt_step = font.render(f"Step: {step_count}", True, (255, 255, 0))
+                txt_rew = font.render(f"Reward: {ep_reward:.2f}", True, (0, 255, 0))
+                
+                screen.blit(txt_env, (15, 15))
+                screen.blit(txt_step, (15, 45))
+                screen.blit(txt_rew, (15, 75))
+
+                pygame.display.flip()
+                pygame.time.delay(int(delay * 1000))
 
             if is_recurrent:
                 action, lstm_states = model.predict(
@@ -88,10 +104,10 @@ def run_visual_demo(
             done = terminated or truncated
 
         print(f"Episode {ep + 1} finished in {step_count} steps | Final Reward: {ep_reward:.4f}")
-        time.sleep(0.5)
+        pygame.time.delay(500)
         env.close()
 
-    cv2.destroyAllWindows()
+    pygame.quit()
     print("\nVisual demo complete!")
 
 
@@ -102,7 +118,7 @@ if __name__ == "__main__":
     parser.add_argument("--is_recurrent", action="store_true")
     parser.add_argument("--use_shaping", action="store_true")
     parser.add_argument("--n_episodes", type=int, default=3)
-    parser.add_argument("--delay", type=float, default=0.1, help="Delay between steps in seconds")
+    parser.add_argument("--delay", type=float, default=0.08, help="Delay between steps in seconds")
 
     args = parser.parse_args()
     run_visual_demo(
