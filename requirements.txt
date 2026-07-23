@@ -1,0 +1,10 @@
+gymnasium>=0.29.0
+minigrid>=2.3.0
+torch>=2.0.0
+stable-baselines3[extra]>=2.2.1
+sb3-contrib>=2.2.1
+wandb>=0.16.0
+matplotlib>=3.7.0
+opencv-python>=4.8.0
+imageio>=2.31.0
+pyyaml>=6.0

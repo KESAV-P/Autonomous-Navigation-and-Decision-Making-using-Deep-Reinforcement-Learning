@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+checkpoints/
+logs/
+media/
+wandb/
+.DS_Store
+*.zip
+*.csv
