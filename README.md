@@ -47,10 +47,10 @@ This repository implements an autonomous navigation agent trained with Deep Rein
 │   │   └── render_trajectory_gif.py
 │   └── utils/                # Utilities and environment diagnostics
 │       └── env_check.py
-├── reports/                  # Results, metrics, presentation guides
+├── reports/                  # Results, metrics, evaluation tables
 │   ├── env_spec.md
 │   ├── reward_shaping_notes.md
-│   ├── review2_presentation_guide.md
+│   ├── larger_grid_eval.md
 │   ├── comparison_table.csv
 │   └── comparison_table.md
 ├── media/                    # Rendered GIFs and comparison charts
@@ -92,13 +92,6 @@ Evaluated across **20 held-out unseen map seeds (1000..1019)** never encountered
 | **MiniGrid-DoorKey-8x8-v0** | MLP-PPO Baseline | Unseen (1000..1019) | 0.0% | 0.0000 | 640.0 | 416.8 |
 | **MiniGrid-DoorKey-8x8-v0** | CNN-PPO Extractor | Unseen (1000..1019) | 0.0% | 0.0000 | 640.0 | 626.8 |
 | **MiniGrid-DoorKey-8x8-v0** | **CNN-LSTM-PPO (Ours)** | **Unseen (1000..1019)** | **100.0%** | **0.9691** | **21.9** | **0.0** |
-
----
-
-## 🎯 Presentation & Review Guide
-
-For a complete slide-by-slide script, metric analysis, and evaluator Q&A responses, refer to:
-[reports/review2_presentation_guide.md](file:///Users/kesavp/PROJECT/Autonomous-Navigation-and-Decision-Making-using-Deep-Reinforcement-Learning/reports/review2_presentation_guide.md)
 
 ---
 
